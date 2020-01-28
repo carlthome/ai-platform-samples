@@ -27,7 +27,7 @@ SLEEP_INTERVAL_SECONDS=5
 # in 20 min (20 * 60 = 1200) we need counter threshold to be 240 (1200 / 5).
 HALT_THRESHOLD=240
 while true; do
-    CPU_PERCENT=$(mpstat -P ALL 1 1 | awk '/Average:/ && $2 ~ /[0–9]/ {print $3}')
+    CPU_PERCENT=$(mpstat -P ALL 1 1 | awk '/Average:.*all.*/ {print $3}')
     if (( $(echo "${CPU_PERCENT} < ${THRESHOLD_PERCENT}" | bc -l) )); then
         COUNTER=$((COUNTER + 1))
         if (( $(echo "${COUNTER} > ${HALT_THRESHOLD}" | bc -l) )); then
